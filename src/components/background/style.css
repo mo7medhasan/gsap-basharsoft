@@ -1,0 +1,76 @@
+
+.app-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.app-content {
+  position: relative;
+  z-index: 1;
+}
+
+.app-bg-top-left {
+  position: absolute;
+
+  width: clamp(500px, 70vw, 1052px);
+  height: clamp(500px, 70vw, 1052px);
+
+  top: -40%;
+  left: -35%;
+
+  background: radial-gradient(50% 50% at 50% 50%,
+      rgba(135, 162, 220, 0.5) 0%,
+      rgba(135, 162, 220, 0) 100%);
+
+  filter: blur(24px);
+  opacity: 0.8;
+}
+
+.app-bg-bottom-right {
+  position: absolute;
+
+  width: clamp(400px, 60vw, 923px);
+  height: clamp(700px, 85vh, 1242px);
+
+  bottom: -10%;
+  right: -20%;
+
+  background: linear-gradient(270deg,
+      rgba(135, 151, 220, 0.8) 4.05%,
+      rgba(135, 156, 220, 0) 100%);
+
+  filter: blur(99px);
+  opacity: 0.6;
+}
+
+.app-bg-center {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+
+  width: min(80vh, 80vw);
+  height: min(80vh, 80vw);
+
+  background-image: url("/assets/ptrn.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+
+  opacity: 0.8;
+}
+
+
+
+
+@media (max-width: 640px) {
+  .app-bg-top-left {
+    opacity: 0.6;
+    filter: blur(16px);
+  }
+
+  .app-bg-bottom-right {
+    opacity: 0.4;
+  }
+}

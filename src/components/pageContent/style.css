@@ -1,0 +1,9 @@
+.app-root {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.app-content {
+  position: relative;
+  z-index: 1;
+}

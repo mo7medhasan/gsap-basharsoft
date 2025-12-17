@@ -1,136 +1,217 @@
 import { memo, useEffect, useRef } from "react";
 import "./style.css";
 import gsap from "gsap";
+
+// ==========================================
+// 📊 DATA
+// ==========================================
 const imageData = [
-  {
-    id: 1,
-    src: "/assets/images-hero/NewName_1.webp",
-    alt: "",
-    position: "center",
-  },
-  {
-    id: 2,
-    src: "/assets/images-hero/NewName_2.webp",
-    alt: "",
-    position: "center",
-  },
-  {
-    id: 3,
-    src: "/assets/images-hero/NewName_3.webp",
-    alt: "",
-    position: "center",
-  },
-  {
-    id: 4,
-    src: "/assets/images-hero/NewName_4.webp",
-    alt: "",
-    position: "center",
-  },
-  {
-    id: 5,
-    src: "/assets/images-hero/NewName_5.webp",
-    alt: "",
-    position: "center",
-  },
-  {
-    id: 6,
-    src: "/assets/images-hero/NewName_6.webp",
-    alt: "",
-    position: "right",
-  },
-  {
-    id: 7,
-    src: "/assets/images-hero/NewName_3.webp",
-    alt: "",
-    position: "center",
-  },
-  {
-    id: 8,
-    src: "/assets/images-hero/NewName_7.webp",
-    alt: "",
-    position: "center",
-  },
-  {
-    id: 9,
-    src: "/assets/images-hero/NewName_1.webp",
-    alt: "",
-    position: "center",
-  },
-  {
-    id: 10,
-    src: "/assets/images-hero/NewName_8.webp",
-    alt: "",
-    position: "center",
-  },
-  {
-    id: 11,
-    src: "/assets/images-hero/NewName_9.webp",
-    alt: "",
-    position: "center",
-  },
-  // {
-  //   id: 12,
-  //   src: "/assets/images-hero/NewName_6.webp",
-  //   alt: "",
-  //   position: "right",
-  // },
-  // {
-  //   id: 13,
-  //   src: "/assets/images-hero/NewName_8.webp",
-  //   alt: "",
-  //   position: "center",
-  // },
+  { id: 1, src: "/assets/images/hero/NewName_1.webp", alt: "", position: "center" },
+  { id: 2, src: "/assets/images/hero/NewName_2.webp", alt: "", position: "center" },
+  { id: 3, src: "/assets/images/hero/NewName_3.webp", alt: "", position: "center" },
+  { id: 4, src: "/assets/images/hero/NewName_4.webp", alt: "", position: "center" },
+  { id: 5, src: "/assets/images/hero/NewName_5.webp", alt: "", position: "center" },
+  { id: 6, src: "/assets/images/hero/NewName_6.webp", alt: "", position: "right" },
+  { id: 7, src: "/assets/images/hero/NewName_3.webp", alt: "", position: "center" },
+  { id: 8, src: "/assets/images/hero/NewName_7.webp", alt: "", position: "center" },
+  { id: 9, src: "/assets/images/hero/NewName_1.webp", alt: "", position: "center" },
+  { id: 10, src: "/assets/images/hero/NewName_8.webp", alt: "", position: "center" },
+  { id: 11, src: "/assets/images/hero/NewName_9.webp", alt: "", position: "center" },
 ];
+
+// ==========================================
+// 🎨 ANIMATION CONSTANTS
+// ==========================================
+const ANIMATION_CONFIG = {
+  rotationDuration: 40,
+  scrollScrub: 1.2,
+  itemStagger: 0.03,
+  radiusMultiplier: 0.6,
+  scrollIconDuration: 0.5,
+  scrollIconDistance: 10,
+};
+
+// ==========================================
+// 🎯 COMPONENT
+// ==========================================
 export const HeroSection = memo(function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const items = gsap.utils.toArray<HTMLDivElement>(".circle-item");
-
-    if (items.length === 0) return;
+    if (!containerRef.current) return;
 
     const ctx = gsap.context(() => {
-      const baseRadius = Math.min(
-        window.innerHeight * 0.6,
-        window.innerWidth * 0.6
-      );
+      const items = gsap.utils.toArray<HTMLImageElement>(".circle-item");
+      if (items.length === 0) return;
 
-      items.forEach((item, idx) => {
-        const angle = (idx / items.length) * Math.PI * 2;
-        const x = Math.cos(angle) * baseRadius;
-        const y = Math.sin(angle) * baseRadius;
-        gsap.set(item, { opacity: 0 });
-        gsap.to(item, { x, y, opacity: 1, duration: 0.8, delay: idx * 0.1 });
-      });
+      const count = items.length;
+      const baseRadius = Math.min(window.innerWidth, window.innerHeight) * ANIMATION_CONFIG.radiusMultiplier;
+      let currentRadius = baseRadius;
+
+      // ==========================================
+      // 1️⃣ INITIAL POSITIONING
+      // ==========================================
+      const setInitialPositions = () => {
+        items.forEach((item, i) => {
+          const angle = (i / count) * Math.PI * 2;
+          gsap.set(item, {
+            x: Math.cos(angle) * baseRadius,
+            y: Math.sin(angle) * baseRadius,
+            opacity: 1,
+          });
+        });
+      };
+
+      setInitialPositions();
+
+      // ==========================================
+      // 2️⃣ IDLE CIRCULAR ROTATION ANIMATION
+      // ==========================================
+      const createIdleAnimation = () => {
+        // Rotation animation for images
+        const idleTL = gsap.timeline({ repeat: -1 });
+        idleTL.to(items, {
+          rotation: 360,
+          duration: ANIMATION_CONFIG.rotationDuration,
+          ease: "none",
+          transformOrigin: "center center",
+        }, 0);
+
+        // Orbital movement
+        const proxy = { angle: 0 };
+        gsap.to(proxy, {
+          angle: Math.PI * 2,
+          duration: ANIMATION_CONFIG.rotationDuration,
+          repeat: -1,
+          ease: "none",
+          onUpdate: () => {
+            items.forEach((item, i) => {
+              const angle = proxy.angle + (i / count) * Math.PI * 2;
+              gsap.set(item, {
+                x: Math.cos(angle) * currentRadius,
+                y: Math.sin(angle) * currentRadius,
+              });
+            });
+          },
+        });
+
+        return idleTL;
+      };
+
+      const idleTimeline = createIdleAnimation();
+
+      // ==========================================
+      // 3️⃣ SCROLL-TRIGGERED ANIMATION
+      // ==========================================
+      const createScrollAnimation = (idleTL: gsap.core.Timeline) => {
+        const scrollTL = gsap.timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: ANIMATION_CONFIG.scrollScrub,
+            pin: true,
+            onEnter: () => idleTL.pause(),
+            onLeaveBack: () => idleTL.play(),
+          },
+        });
+
+        // Animate images outward with fade
+        scrollTL.to(items, {
+          stagger: ANIMATION_CONFIG.itemStagger,
+          opacity: 0,
+          ease: "power3.out",
+          onUpdate() {
+            const progress = scrollTL.progress();
+            const radius = baseRadius + progress * Math.max(window.innerWidth, window.innerHeight);
+            currentRadius = radius;
+
+            items.forEach((item, i) => {
+              const angle = progress * Math.PI * 2 + (i / count) * Math.PI * 2;
+              const scale = 1 + progress * 2;
+              gsap.set(item, {
+                x: Math.cos(angle) * radius,
+                y: Math.sin(angle) * radius,
+                scale,
+              });
+            });
+          },
+        }, 0);
+
+        // Animate hero content
+        scrollTL.to(".hero-content", {
+          stagger: ANIMATION_CONFIG.itemStagger,
+          y: 20,
+          filter: "blur(10px)",
+          scale: 0.3,
+          ease: "power3.out",
+        });
+      };
+
+      createScrollAnimation(idleTimeline);
+
+      // ==========================================
+      // 4️⃣ SCROLL ICON ANIMATION
+      // ==========================================
+      const createScrollIconAnimation = () => {
+        gsap.timeline({
+          repeat: -1,
+          yoyo: true,
+          defaults: { ease: "sine.inOut" },
+        }).to(".scroll-icon", {
+          y: ANIMATION_CONFIG.scrollIconDistance,
+          duration: ANIMATION_CONFIG.scrollIconDuration,
+        }, 0);
+      };
+
+      createScrollIconAnimation();
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
+  // ==========================================
+  // 🎬 RENDER
+  // ==========================================
   return (
     <section ref={containerRef} className="hero-section">
-      <div className="hero-content">
-        <h1 className="hero-title">
-          STORIES OF
-          <br /> <span className="primary-text">IMPACT</span>
-        </h1>
-        <p className="hero-description">
-          Behind every milestone is a story. These are the changemakers driving
-          Our VISION and the results speak for themselves.
-        </p>
-      </div>
+      <div className="hero-container">
+        {/* Hero Content */}
+        <div className="hero-content">
+          <h1 className="hero-title">
+            STORIES OF
+            <br />
+            <span className="primary-text">IMPACT</span>
+          </h1>
+          <p className="hero-description">
+            Behind every milestone is a story. These are the changemakers
+            driving Our VISION and the results speak for themselves.
+          </p>
+        </div>
 
-      <div className="circles-container">
-        {imageData.map((image) => (
+        {/* Circular Image Gallery */}
+        <div className="circles-container">
+          {imageData.map((image) => (
+            <img
+              key={image.id}
+              src={image.src}
+              loading="lazy"
+              style={{ objectPosition: image.position }}
+              alt={image.alt}
+              className="circle-item"
+            />
+          ))}
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="hero-footer">
           <img
-            key={image.id}
-            src={image.src}
-            loading="lazy"
-            style={{ objectPosition: image.position }}
-            alt={image.alt}
-            className="circle-item"
+            src="/assets/icons/scroll.svg"
+            alt="Scroll Down"
+            className="scroll-icon"
           />
-        ))}
+          <span className="scroll-text">Scroll Down</span>
+        </div>
       </div>
     </section>
   );

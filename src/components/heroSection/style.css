@@ -1,4 +1,9 @@
 .hero-section {
+ 
+  height: 200vh;
+ 
+}
+.hero-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,7 +12,6 @@
   position: relative;
   overflow: hidden;
 }
-
 .hero-content {
   text-align: center;
   z-index: 1;
@@ -15,23 +19,23 @@
 
 .hero-title {
   font-size: 3rem;
-  color: #333;
+  color: var(--text-color);
   margin-bottom: 1rem;
 }
 
 .primary-text {
-  color: #007bff;
+  color: var(--primary-color);
 }
 
 .hero-description {
   font-size: 1.25rem;
-  color: #666;
+  color: var(--secondary-text-color);
   max-width: 600px;
   margin: 0 auto;
 }
 
 .circles-container {
-  position: absolute;
+   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -41,7 +45,11 @@
   align-items: center;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  pointer-events: none; 
+    /* position: absolute; */
+  /* inset: 0; */
+  perspective: 1200px;
+  transform-style: preserve-3d;
 }
 
 .circle-item {
@@ -51,4 +59,17 @@
   border-radius: 8px;
   object-fit: cover;
   pointer-events: auto;
+    will-change: transform;
+}
+
+
+
+.hero-footer {
+  position: absolute;
+  bottom: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+  color: var(--secondary-text-color);
 }

@@ -1,73 +1,181 @@
-# React + TypeScript + Vite
+# GSAP Scroll Narratives – React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project demonstrates an advanced **scroll-driven storytelling experience** built with **React 19**, **TypeScript**, **Vite**, and **GSAP (ScrollTrigger)**.
 
-Currently, two official plugins are available:
+The main goal is to showcase how multiple pinned sections, complex timelines, and a global scroll progress narrator can work together to create a smooth, immersive narrative flow.
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+##  🔗 Live Demo
+```bash
+👉 https://gsap-basharsoft.vercel.app
+```
+---
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* Scroll-driven animations using **GSAP ScrollTrigger**
+* Circular orbital animation in the Hero section
+* Pinned sections with scrubbed timelines
+* Global **ScrollProgressNarrator** that reacts to page scroll
+* Fixed animated background layer
+* Modular, scalable component architecture
+* Fully typed with TypeScript
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🧩 Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* **React 19**
+* **TypeScript**
+* **Vite**
+* **GSAP 3 (ScrollTrigger)**
+* **CSS (modular styles per component)**
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📁 Project Structure
+
+```txt
+src/
+├─ assets/
+│  └─ images/
+├─ components/
+│  ├─ index.ts
+│  ├─ background/
+│  │  ├─ index.ts
+│  │  ├─ style.css
+│  │  └─ FixedBackground.tsx
+│  ├─ heroSection/
+│  ├─ gallerySection/
+│  ├─ storiesSection/
+│  ├─ finalCTASection/
+│  ├─ scrollProgressNarrator/
+│  └─ pageContent/
+├─ App.tsx
+├─ main.tsx
+└─ index.css
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🧠 Core Concept
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+The application is structured as a **scroll narrative**:
+
+1. **HeroSection**
+
+   * Idle circular rotation animation
+   * On scroll: elements expand, fade, and transition
+   * Section is pinned during scroll
+
+2. **ScrollProgressNarrator**
+
+   * Wraps multiple sections
+   * Displays a fixed progress bar near the bottom of the viewport
+   * Progress increases based on scroll position
+   * Appears only after reaching the first wrapped section
+
+3. **GallerySection / StoriesSection / FinalCTASection**
+
+   * Each section controls its own GSAP timeline
+   * Uses `pin`, `scrub`, and `anticipatePin` for smooth transitions
+
+---
+
+## 📊 Scroll Progress Narrator
+
+The `ScrollProgressNarrator` component:
+
+* Wraps multiple sections as children
+* Tracks scroll progress across those sections
+* Renders a fixed progress bar positioned at **10% from the bottom**
+* Uses GSAP `ScrollTrigger` with `scrub` for smooth updates
+
+Visual styling:
+
+* Progress gradient:
+
+  ```css
+  background: linear-gradient(90deg, #C2D2FC 0%, #1C46A0 100%);
+  ```
+
+* Track background:
+
+  ```css
+  background: var(--status-skeleton, #E3E3E4);
+  ```
+
+---
+
+## 🚀 Getting Started
+
+Install dependencies:
+
+```bash
+npm install
 ```
+
+Run development server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Preview production build:
+
+```bash
+npm run preview
+```
+
+---
+
+## ⚙️ GSAP Setup
+
+GSAP ScrollTrigger is registered once at app startup:
+
+```ts
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+```
+
+Each section owns its animation lifecycle using `gsap.context()` to ensure clean mounting and unmounting.
+
+---
+
+## 🧪 Notes & Best Practices
+
+* All scroll animations are **scrubbed**, not time-based
+* `pinSpacing: false` is used to maintain tight narrative flow
+* Heavy animations are isolated per section for performance
+* Images are lazy-loaded where possible
+
+---
+
+## 📌 Use Cases
+
+* Corporate storytelling websites
+* Product launch pages
+* Data-driven narrative landing pages
+* GSAP + React reference implementation
+
+---
+
+## 👨‍💻 Author
+
+**Mohamed Hassan**
+Senior Front-End Developer
+Specialized in React, TypeScript, and animation-driven UI
+
+---
+
+## 📄 License
+
+This project is for educational and demonstration purposes.

@@ -40,7 +40,8 @@ export const FinalCTASection = memo(() => {
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top top",
-            pinSpacing: false,
+            end:"bottom top",
+            // pinSpacing: false,
             pin: true,
             toggleActions: "play none none reverse",
           },

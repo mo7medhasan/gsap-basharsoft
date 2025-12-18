@@ -20,10 +20,16 @@
   width: 100%;
   transform: scaleX(0);
   transform-origin: left;
-  background: linear-gradient(
-    90deg,
-    #c2d2fc 0%,
-    #1c46a0 100%
-  );
+  background: linear-gradient(90deg,
+      #c2d2fc 0%,
+      #1c46a0 100%);
   border-radius: inherit;
+}
+
+@media (max-width: 450px) {
+  .ScrollProgressNarrator {
+
+    bottom: 5%;
+
+  }
 }

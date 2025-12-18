@@ -74,3 +74,23 @@
   color: #fff;
 
 }
+
+@media (max-width:500px) {
+
+  .FinalCTA-content {
+    gap: 1rem;
+
+  }
+
+  .FinalCTA-title {
+    font-size: 2rem;
+  }
+
+
+
+  .FinalCTA-description {
+    font-size: 1rem;
+    max-width: 90vw;
+
+  }
+}

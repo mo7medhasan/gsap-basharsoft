@@ -58,8 +58,8 @@
   width: min(175px, 25vw);
   aspect-ratio: 3 /4;
   border-radius: 16px;
- box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
-will-change: transform, opacity;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+  will-change: transform, opacity;
   object-fit: cover;
   pointer-events: auto;
 }
@@ -74,4 +74,20 @@ will-change: transform, opacity;
   align-items: center;
   z-index: 1;
   color: var(--secondary-text-color);
+}
+
+
+
+@media (max-width:500px) {
+  .hero-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+
+
+  .hero-description {
+    font-size: 1rem;
+    max-width: 90vw;
+  }
 }

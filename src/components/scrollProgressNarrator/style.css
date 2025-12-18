@@ -1,0 +1,29 @@
+.ScrollProgressNarrator {
+  position: fixed;
+  left: 50%;
+  bottom: 10%;
+  transform: translateX(-50%);
+  width: min(420px, 50vw);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.progress-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--status-skeleton, #e3e3e4);
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(
+    90deg,
+    #c2d2fc 0%,
+    #1c46a0 100%
+  );
+  border-radius: inherit;
+}

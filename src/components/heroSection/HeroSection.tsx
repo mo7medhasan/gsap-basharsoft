@@ -78,7 +78,8 @@ const ANIMATION_CONFIG = {
 // ==========================================
 // 🎯 COMPONENT
 // ==========================================
-export const HeroSection = memo(function HeroSection() {
+  export const HeroSection = memo(() => {
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

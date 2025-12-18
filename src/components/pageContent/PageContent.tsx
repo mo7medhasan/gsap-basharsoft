@@ -1,7 +1,13 @@
 import { memo } from "react";
 import "./style.css";
-import { FixedBackground, GallerySection, HeroSection, StoriesSection } from "../";
-
+import {
+  FinalCTASection,
+  FixedBackground,
+  GallerySection,
+  HeroSection,
+  ScrollProgressNarrator,
+  StoriesSection,
+} from "../";
 
 export const PageContent = memo(function PageContent() {
   return (
@@ -11,8 +17,11 @@ export const PageContent = memo(function PageContent() {
       {/* Page Content */}
       <main className="app-content">
         <HeroSection />
-        <GallerySection/>
-        <StoriesSection />
+        <ScrollProgressNarrator>
+          <GallerySection />
+          <StoriesSection />
+          <FinalCTASection />
+        </ScrollProgressNarrator>
       </main>
     </div>
   );

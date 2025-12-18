@@ -83,7 +83,6 @@ export const GallerySection = memo(() => {
           pin: true,
           anticipatePin: 1,
           pinSpacing: false,
-
           invalidateOnRefresh: true,
         },
       });

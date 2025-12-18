@@ -80,6 +80,7 @@ export const StoriesSection = memo(() => {
           start: "top top",
           end: "+=140%",
           scrub: 1.5,
+          pinSpacing:false,
           pin: true,
           invalidateOnRefresh: true,
         },

@@ -1,0 +1,76 @@
+.FinalCTA-section {
+  height: 100vh;
+
+}
+
+.FinalCTA-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+
+
+}
+
+.FinalCTA-content {
+  text-align: center;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+
+}
+
+.FinalCTA-title {
+  font-size: 3rem;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+
+
+.FinalCTA-description {
+  font-size: 1.25rem;
+  color: var(--secondary-text-color);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.btn-container {
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  width: 166;
+  height: 44;
+  opacity: 1;
+  gap: 8;
+  border-radius: 100px;
+  border-width: 1px;
+  padding: 1rem 3rem;
+  text-align: center;
+  border: 1px solid #194A9233;
+  background-color: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 15px #194A9233;
+
+}
+
+.btn-primary {
+  background: #153C70;
+  color: #fff;
+
+}

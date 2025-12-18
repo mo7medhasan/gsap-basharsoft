@@ -36,6 +36,7 @@
   place-items: center;
   pointer-events: none;
   transform-style: preserve-3d;
+
 }
 
 .zoom-card {

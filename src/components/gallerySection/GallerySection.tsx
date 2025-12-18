@@ -37,7 +37,8 @@ export const GallerySection = memo(() => {
     const ctx = gsap.context(() => {
       const cardsEl = gsap.utils.toArray<HTMLElement>(".zoom-card");
       const content = sectionRef.current!.querySelector(".gallery-content")!;
-      const paragraph = sectionRef.current!.querySelector(".gallery-paragraph")!;
+      const paragraph =
+        sectionRef.current!.querySelector(".gallery-paragraph")!;
       const getRadius = () => window.innerWidth * 0.45;
 
       // ===============================
@@ -59,7 +60,14 @@ export const GallerySection = memo(() => {
           opacity: 1,
           filter: `grayscale(${20 * i}%)`,
           zIndex: 2,
-          x: i % 2 === 0 ? (i > 1 ? - getRadius()/8 : -getRadius()/4) : i > 1 ?  getRadius()/8 : getRadius()/4,
+          x:
+            i % 2 === 0
+              ? i > 1
+                ? -getRadius() / 8
+                : -getRadius() / 4
+              : i > 1
+              ? getRadius() / 8
+              : getRadius() / 4,
         });
       });
 
@@ -70,10 +78,12 @@ export const GallerySection = memo(() => {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=120%",
           scrub: 1.5,
+          end: "80% top",
           pin: true,
-          // anticipatePin: 1,
+          anticipatePin: 1,
+          pinSpacing: false,
+
           invalidateOnRefresh: true,
         },
       });
@@ -92,43 +102,46 @@ export const GallerySection = memo(() => {
           ease: "power3.out",
         },
         0
-      ).to(
-        content,
-        {
-          z: 0,
-          scale: 1,
-          opacity: 1,
-          duration: 3,
-          delay: 1,
-          filter: "blur(0px)",
-          ease: "power3.out",
-        },
-        0
-      ).to(
-        content,
-        {
-          z: 0,
-          scale: 0,
-          opacity: 1,
-          duration: 2,
-          delay: 10,
-          filter: "blur(50px)",
-          ease: "power3.out",
-        },
-        0
-      ).to(
-        paragraph,
-        {
-          z: 0,
-          scale: 1,
-          opacity: 1,
-          duration: 2,
-          delay: 11,
-          filter: "blur(0.1px)",
-          ease: "power3.out",
-        },
-        0
-      );
+      )
+        .to(
+          content,
+          {
+            z: 0,
+            scale: 1,
+            opacity: 1,
+            duration: 3,
+            delay: 1,
+            filter: "blur(0px)",
+            ease: "power3.out",
+          },
+          0
+        )
+        .to(
+          content,
+          {
+            z: 0,
+            scale: 0,
+            opacity: 1,
+            duration: 2,
+            delay: 10,
+            filter: "blur(50px)",
+            ease: "power3.out",
+          },
+          0
+        )
+        .to(
+          paragraph,
+          {
+            z: 0,
+            scale: 1,
+            opacity: 1,
+            duration: 2,
+            delay: 11,
+            filter: "blur(0.1px)",
+            ease: "power3.out",
+          },
+          0
+        );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -160,10 +173,10 @@ export const GallerySection = memo(() => {
           ))}
         </div>
 
-        <div className="gallery-paragraph">
+        <h5 className="gallery-paragraph">
           From pilgrimage tourism to business development, each number is a step
           toward a more empowered, prosperous Saudi Arabia.
-        </div>
+        </h5>
       </div>
     </section>
   );

@@ -173,8 +173,8 @@ export const HeroSection = memo(function HeroSection() {
           scrollTrigger: {
             trigger: containerEl,
             start: "top top",
-            end: () => `+=${window.innerHeight}`,
             scrub: ANIMATION_CONFIG.scrollScrub,
+            end: () => `+=${window.innerHeight}`,
             pin: true,
             pinSpacing: false,
             anticipatePin: 1,

@@ -1,6 +1,6 @@
 import { memo } from "react";
 import "./style.css";
-import { FixedBackground, HeroSection } from "../";
+import { FixedBackground, GallerySection, HeroSection } from "../";
 
 
 export const PageContent = memo(function PageContent() {
@@ -11,6 +11,7 @@ export const PageContent = memo(function PageContent() {
       {/* Page Content */}
       <main className="app-content">
         <HeroSection />
+        <GallerySection/>
       </main>
     </div>
   );

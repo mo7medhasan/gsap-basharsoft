@@ -6,17 +6,61 @@ import gsap from "gsap";
 // 📊 DATA
 // ==========================================
 const imageData = [
-  { id: 1, src: "/assets/images/hero/NewName_1.webp", alt: "", position: "center" },
-  { id: 2, src: "/assets/images/hero/NewName_2.webp", alt: "", position: "center" },
-  { id: 3, src: "/assets/images/hero/NewName_3.webp", alt: "", position: "center" },
-  { id: 4, src: "/assets/images/hero/NewName_4.webp", alt: "", position: "center" },
-  { id: 5, src: "/assets/images/hero/NewName_5.webp", alt: "", position: "center" },
-  { id: 6, src: "/assets/images/hero/NewName_6.webp", alt: "", position: "right" },
-  { id: 7, src: "/assets/images/hero/NewName_3.webp", alt: "", position: "center" },
-  { id: 8, src: "/assets/images/hero/NewName_7.webp", alt: "", position: "center" },
-  { id: 9, src: "/assets/images/hero/NewName_1.webp", alt: "", position: "center" },
-  { id: 10, src: "/assets/images/hero/NewName_8.webp", alt: "", position: "center" },
-  { id: 11, src: "/assets/images/hero/NewName_9.webp", alt: "", position: "center" },
+  {
+    id: 1,
+    src: "/assets/images/hero/NewName_1.webp",
+    
+  },
+  {
+    id: 2,
+    src: "/assets/images/hero/NewName_2.webp",
+    
+  },
+  {
+    id: 3,
+    src: "/assets/images/hero/NewName_3.webp",
+    
+  },
+  {
+    id: 4,
+    src: "/assets/images/hero/NewName_4.webp",
+    
+  },
+  {
+    id: 5,
+    src: "/assets/images/hero/NewName_5.webp",
+    
+  },
+  {
+    id: 6,
+    src: "/assets/images/hero/NewName_6.webp",
+  
+  },
+  {
+    id: 7,
+    src: "/assets/images/hero/NewName_3.webp",
+    
+  },
+  {
+    id: 8,
+    src: "/assets/images/hero/NewName_7.webp",
+    
+  },
+  {
+    id: 9,
+    src: "/assets/images/hero/NewName_1.webp",
+    
+  },
+  {
+    id: 10,
+    src: "/assets/images/hero/NewName_8.webp",
+    
+  },
+  {
+    id: 11,
+    src: "/assets/images/hero/NewName_9.webp",
+    
+  },
 ];
 
 // ==========================================
@@ -39,19 +83,36 @@ export const HeroSection = memo(function HeroSection() {
 
   useEffect(() => {
     if (!containerRef.current) return;
-
+    const containerEl = containerRef.current;
     const ctx = gsap.context(() => {
       const items = gsap.utils.toArray<HTMLImageElement>(".circle-item");
+      const content_hero = containerEl.querySelectorAll(".hero-content");
+      const hero_footer = containerEl.querySelectorAll(".hero-footer");
       if (items.length === 0) return;
 
       const count = items.length;
-      const baseRadius = Math.min(window.innerWidth, window.innerHeight) * ANIMATION_CONFIG.radiusMultiplier;
+      const baseRadius =
+        Math.min(window.innerWidth, window.innerHeight) *
+        ANIMATION_CONFIG.radiusMultiplier;
       let currentRadius = baseRadius;
 
       // ==========================================
       // 1️⃣ INITIAL POSITIONING
       // ==========================================
       const setInitialPositions = () => {
+        gsap.set(content_hero, {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          filter: "blur(0px)",
+        });
+
+        gsap.set(hero_footer, {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          filter: "blur(0px)",
+        });
         items.forEach((item, i) => {
           const angle = (i / count) * Math.PI * 2;
           gsap.set(item, {
@@ -70,12 +131,16 @@ export const HeroSection = memo(function HeroSection() {
       const createIdleAnimation = () => {
         // Rotation animation for images
         const idleTL = gsap.timeline({ repeat: -1 });
-        idleTL.to(items, {
-          rotation: 360,
-          duration: ANIMATION_CONFIG.rotationDuration,
-          ease: "none",
-          transformOrigin: "center center",
-        }, 0);
+        idleTL.to(
+          items,
+          {
+            rotation: 360,
+            duration: ANIMATION_CONFIG.rotationDuration,
+            ease: "none",
+            transformOrigin: "center center",
+          },
+          0
+        );
 
         // Orbital movement
         const proxy = { angle: 0 };
@@ -106,46 +171,78 @@ export const HeroSection = memo(function HeroSection() {
       const createScrollAnimation = (idleTL: gsap.core.Timeline) => {
         const scrollTL = gsap.timeline({
           scrollTrigger: {
-            trigger: containerRef.current,
+            trigger: containerEl,
             start: "top top",
-            end: "bottom top",
+            end: () => `+=${window.innerHeight}`,
             scrub: ANIMATION_CONFIG.scrollScrub,
             pin: true,
+            pinSpacing: false,
+            anticipatePin: 1,
+
             onEnter: () => idleTL.pause(),
             onLeaveBack: () => idleTL.play(),
+
+            // تثبيت الحالة النهائية
+            onLeave: () => {
+              gsap.set(containerEl, { clearProps: "transform" });
+            },
           },
         });
 
-        // Animate images outward with fade
-        scrollTL.to(items, {
-          stagger: ANIMATION_CONFIG.itemStagger,
-          opacity: 0,
-          ease: "power3.out",
-          onUpdate() {
-            const progress = scrollTL.progress();
-            const radius = baseRadius + progress * Math.max(window.innerWidth, window.innerHeight);
-            currentRadius = radius;
+        // 🔵 Images
+        scrollTL.to(
+          items,
+          {
+            stagger: ANIMATION_CONFIG.itemStagger,
+            opacity: 0,
+            ease: "power3.out",
+            onUpdate() {
+              const progress = scrollTL.progress();
+              const radius =
+                baseRadius +
+                progress * Math.max(window.innerWidth, window.innerHeight);
 
-            items.forEach((item, i) => {
-              const angle = progress * Math.PI * 2 + (i / count) * Math.PI * 2;
-              const scale = 1 + progress * 2;
-              gsap.set(item, {
-                x: Math.cos(angle) * radius,
-                y: Math.sin(angle) * radius,
-                scale,
+              currentRadius = radius;
+
+              items.forEach((item, i) => {
+                const angle =
+                  progress * Math.PI * 2 + (i / count) * Math.PI * 2;
+                gsap.set(item, {
+                  x: Math.cos(angle) * radius,
+                  y: Math.sin(angle) * radius,
+                  scale: 1 + progress * 2,
+                });
               });
-            });
+            },
           },
-        }, 0);
+          0
+        );
 
-        // Animate hero content
-        scrollTL.to(".hero-content", {
-          stagger: ANIMATION_CONFIG.itemStagger,
-          y: 20,
-          filter: "blur(10px)",
-          scale: 0.3,
-          ease: "power3.out",
-        });
+        // 🔵 Hero content
+        scrollTL.to(
+          content_hero,
+          {
+            y: 20,
+            scale: 0,
+            opacity: 0,
+            filter: "blur(10px)",
+            ease: "power3.out",
+          },
+          0
+        );
+
+        // 🔵 Footer
+        scrollTL.to(
+          hero_footer,
+          {
+            y: 200,
+            scale: 0,
+            opacity: 0,
+            filter: "blur(10px)",
+            ease: "power2.inOut",
+          },
+          0.15
+        );
       };
 
       createScrollAnimation(idleTimeline);
@@ -154,14 +251,20 @@ export const HeroSection = memo(function HeroSection() {
       // 4️⃣ SCROLL ICON ANIMATION
       // ==========================================
       const createScrollIconAnimation = () => {
-        gsap.timeline({
-          repeat: -1,
-          yoyo: true,
-          defaults: { ease: "sine.inOut" },
-        }).to(".scroll-icon", {
-          y: ANIMATION_CONFIG.scrollIconDistance,
-          duration: ANIMATION_CONFIG.scrollIconDuration,
-        }, 0);
+        gsap
+          .timeline({
+            repeat: -1,
+            yoyo: true,
+            defaults: { ease: "sine.inOut" },
+          })
+          .to(
+            ".scroll-icon",
+            {
+              y: ANIMATION_CONFIG.scrollIconDistance,
+              duration: ANIMATION_CONFIG.scrollIconDuration,
+            },
+            0
+          );
       };
 
       createScrollIconAnimation();
@@ -196,8 +299,8 @@ export const HeroSection = memo(function HeroSection() {
               key={image.id}
               src={image.src}
               loading="lazy"
-              style={{ objectPosition: image.position }}
-              alt={image.alt}
+              style={{ objectPosition: "center"}}
+              alt={image.src.slice(-10)}
               className="circle-item"
             />
           ))}

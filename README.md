@@ -7,7 +7,7 @@ The main goal is to showcase how multiple pinned sections, complex timelines, an
 
 ##  🔗 Live Demo
 ```bash
-👉 https://gsap-basharsoft.vercel.app
+👉 https://gsap-company.vercel.app
 ```
 ---
 

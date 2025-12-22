@@ -1,5 +1,5 @@
 .hero-section {
-  height: 100vh;
+  height: 400vh;
 
 }
 
@@ -26,6 +26,15 @@
   font-size: 3rem;
   color: var(--text-color);
   margin-bottom: 1rem;
+}
+
+.mask-text {
+  overflow: hidden;
+}
+
+.mask-line {
+  display: inline-block;
+  will-change: transform;
 }
 
 

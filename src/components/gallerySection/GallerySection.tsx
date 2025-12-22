@@ -71,17 +71,16 @@ export const GallerySection = memo(() => {
         });
       });
 
-      // ===============================
-      // Scroll Animation
-      // ===============================
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
           scrub: 1.5,
-          end: "80% top",
+          end: "bottom top",
           pin: true,
           anticipatePin: 1,
+          
           pinSpacing: false,
           invalidateOnRefresh: true,
         },
@@ -93,6 +92,7 @@ export const GallerySection = memo(() => {
           z: () => getRadius() / 0.5,
           scale: 2,
           opacity: 0.8,
+          delay: 0.5,
           filter: "grayscale(0%)",
           duration: 8,
           zIndex: 5,
@@ -140,7 +140,20 @@ export const GallerySection = memo(() => {
             ease: "power3.out",
           },
           0
+        ) .to(
+          paragraph,
+          {
+            z: -300,
+            scale: 0,
+            opacity: 0,
+            duration: 2,
+            delay: 14,
+            filter: "blur(15px)",
+            ease: "power3.out",
+          },
+          0
         );
+        ScrollTrigger.refresh();
     }, sectionRef);
 
     return () => ctx.revert();

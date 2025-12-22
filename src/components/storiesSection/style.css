@@ -1,6 +1,6 @@
 .stories-section {
   position: relative;
-  height: 200vh;
+  height: 200vh; 
   overflow: hidden;
   color: var(--text-color);
 }
@@ -10,6 +10,7 @@
   display: grid;
   place-items: center;
   position: relative;
+  overflow: hidden;
 }
 
 
@@ -27,8 +28,10 @@
   width: min(400px, 40vw);
   aspect-ratio: 3.6 / 4;
   border-radius: 20px;
-  background: #fff;
-  /* backdrop-filter: blur(10px) grayscale(20%); */
+  background: rgba(255, 255, 255, 0.2); 
+  backdrop-filter: blur(10px) grayscale(20%);
+  -webkit-backdrop-filter: blur(10px) grayscale(20%);
+
   opacity: 0.99;
   display: flex;
   flex-direction: column;
@@ -40,8 +43,6 @@
 
   box-shadow: 0px 2.06px 8.24px 0px #29262F1A;
   border: 0.64px solid var(--background-surface-surface, #FFFFFF);
-
-
 }
 
 

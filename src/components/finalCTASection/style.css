@@ -1,5 +1,6 @@
 .FinalCTA-section {
-  height: 100vh;
+  min-height: 100vh;
+  position: relative;
 
 }
 
@@ -10,11 +11,8 @@
   justify-content: center;
   height: 100vh;
 
-  position: relative;
   overflow: hidden;
   z-index: 1;
-
-
 }
 
 .FinalCTA-content {

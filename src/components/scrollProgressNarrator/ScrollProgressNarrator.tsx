@@ -65,6 +65,7 @@ export const ScrollProgressNarrator = memo(({ children }: Props) => {
           scrub: true,
         },
       });
+      ScrollTrigger.refresh();
     }, wrapperRef);
 
     return () => ctx.revert();

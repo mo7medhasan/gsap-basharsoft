@@ -13,17 +13,17 @@ export const FixedBackground = memo(() => {
 
     const ctx = gsap.context(() => {
       gsap.set(bgRef.current, { scale: 1 });
- const idleTL = gsap.timeline({ repeat: -1 });
-        idleTL.to(
-          bgRef.current,
-          {
-            rotation: 360,
-            duration: 50,
-            ease: "none",
-            transformOrigin: "center center",
-          },
-          0
-        );
+//  const idleTL = gsap.timeline({ repeat: -1 });
+//         idleTL.to(
+//           bgRef.current,
+//           {
+//             rotation: 360,
+//             duration: 50,
+//             ease: "none",
+//             transformOrigin: "center center",
+//           },
+//           0
+//         );
       gsap.to(bgRef.current, {
         scale: 2,
         ease: "none",
@@ -34,6 +34,7 @@ export const FixedBackground = memo(() => {
           scrub: true,
         },
       });
+      ScrollTrigger.refresh();
     }, bgRef);
 
     return () => ctx.revert();

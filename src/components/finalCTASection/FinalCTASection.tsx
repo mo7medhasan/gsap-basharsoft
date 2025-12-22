@@ -1,13 +1,12 @@
 import { memo, useEffect, useRef } from "react";
 import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
 import "./style.css";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import ScrollToPlugin from "gsap/ScrollToPlugin";
 
-gsap.registerPlugin(ScrollTrigger);
-
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 export const FinalCTASection = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -15,42 +14,62 @@ export const FinalCTASection = memo(() => {
       const contentEl =
         containerRef.current!.querySelector(".FinalCTA-content");
 
-      if (!contentEl) return;
+      const t1 = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+          pin: true,
+          // pinSpacing: false,
+          anticipatePin: 1,
+        },
+      });
 
-      // enable 3D
-      gsap.set(containerRef.current, { perspective: 1200 });
-
-      gsap.fromTo(
+      t1.fromTo(
         contentEl,
         {
-          scale: 3,
-          z: 300,
-          y: 120,
-          filter: "blur(12px)",
-          opacity: 0,
+          scale: 0.5,
+          z: -300,
+          opacity: 0.1,
+          // y: 100,
+          filter: "blur(50px)",
         },
         {
+          opacity: 1,
           scale: 1,
           z: 0,
           y: 0,
           filter: "blur(0px)",
-          opacity: 1,
-          duration: 1.8,
+          duration: 1.4,
           ease: "power3.out",
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top top",
-            end:"bottom top",
-            // pinSpacing: false,
-            pin: true,
-            toggleActions: "play none none reverse",
           },
         }
       );
+      ScrollTrigger.refresh();
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
+  const handleScrollToStories = (target : string) => {
+    ScrollTrigger.getAll().forEach(st => {
+      if (st.pin) st.disable(false);
+    });
+  
+    gsap.to(window, {
+      scrollTo: { y: target },
+      duration: 1.5,
+      ease: "power3.inOut",
+      onComplete: () => {
+        ScrollTrigger.getAll().forEach(st => st.enable());
+        ScrollTrigger.refresh();
+      },
+    });
+  };
+  
 
   return (
     <section ref={containerRef} className="FinalCTA-section">
@@ -67,8 +86,10 @@ export const FinalCTASection = memo(() => {
           </p>
 
           <div className="btn-container">
-            <button className="btn">ANNUAL REPORT</button>
-            <button className="btn btn-primary">OUR VISION KPIS</button>
+            <button className="btn"  onClick={() => handleScrollToStories("#wrapper")}>ANNUAL REPORT</button>
+            <button className="btn btn-primary" onClick={() => handleScrollToStories(".zoom-section")}>
+              OUR VISION KPIS
+            </button>
           </div>
         </div>
       </div>

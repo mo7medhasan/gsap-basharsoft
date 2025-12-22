@@ -103,12 +103,12 @@ export const HeroSection = memo(() => {
               opacity: 0,
               scale: 0.85,
               delay: 7,
-              duration: 7,              filter: "blur(10px)",
+              duration: 7,
+              filter: "blur(10px)",
             },
             0
           )
-          .to(heroFooter, { opacity: 0, y: 40, delay: 8,
-            duration: 8, }, 0);
+          .to(heroFooter, { opacity: 0, y: 40, delay: 8, duration: 8 }, 0);
       };
       const introTL = gsap.timeline({
         defaults: { ease: "expo.inOut" },

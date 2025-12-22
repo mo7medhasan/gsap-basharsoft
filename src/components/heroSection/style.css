@@ -65,6 +65,10 @@
 .circle-item {
   position: absolute;
   width: min(175px, 25vw);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   aspect-ratio: 3 /4;
   border-radius: 16px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);

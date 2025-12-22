@@ -45,11 +45,8 @@ export const HeroSection = memo(() => {
       const radius = Math.min(window.innerWidth, window.innerHeight) * 0.6;
       const count = items.length;
 
-      /* ===============================
-         INITIAL STATE
-      =============================== */
       gsap.set(items, { x: 0, y: 0, scale: 0, opacity: 0 });
-      gsap.set(textLines, { y: 50, rotation: -5 });
+      gsap.set(textLines, { y: 200, rotation: -5 });
       gsap.set(".hero-description", {
         opacity: 0,
         y: 20,
@@ -69,29 +66,63 @@ export const HeroSection = memo(() => {
               anticipatePin: 1,
             },
           })
-          .to(items, { scale: 0.9, ease: "power3.inOut" })
+          .to(items, {
+            x: (i) => Math.cos((i / count) * Math.PI * 2) * radius,
+            y: (i) => Math.sin((i / count) * Math.PI * 2) * radius,
+            duration: 0,
+            stagger: 0.005,
+          })
+          .to(items, { scale: 1, ease: "power3.inOut" })
           .to(items, {
             x: 0,
             y: 0,
             scale: 0,
             z: -300,
-            stagger: 0.08,
+            duration: 3,
+            stagger: 0.005,
             ease: "power3.inOut",
           })
-          .to(textLines, { x: 500, stagger: 0.08, rotation: -20 })
-          .to(".hero-description", { opacity: 0, y: 20, filter: "blur(6px)" })
+          .to(textLines, {
+            x: 500,
+            stagger: 1,
+            rotation: -20,
+            duration: 2,
+            delay: 3,
+            ease: "power3.inOut",
+          })
+          .to(".hero-description", {
+            opacity: 0,
+            y: 20,
+            filter: "blur(6px)",
+            delay: 6,
+            duration: 6,
+          })
           .to(
             heroContent,
-            { opacity: 0, scale: 0.85, delay: 3, filter: "blur(10px)" },
+            {
+              opacity: 0,
+              scale: 0.85,
+              delay: 7,
+              duration: 7,              filter: "blur(10px)",
+            },
             0
           )
-          .to(heroFooter, { opacity: 0, y: 40 }, 0);
+          .to(heroFooter, { opacity: 0, y: 40, delay: 8,
+            duration: 8, }, 0);
       };
       const introTL = gsap.timeline({
         defaults: { ease: "expo.inOut" },
       });
 
       introTL
+        .to(items, {
+          x: (i) => Math.cos((i / count) * Math.PI * 2) * radius,
+          y: (i) => Math.sin((i / count) * Math.PI * 2) * radius,
+          duration: 2,
+          stagger: 0.001,
+          scale: 1,
+          opacity: 1,
+        })
         .to(textLines, {
           y: 0,
           rotation: 0,
@@ -108,18 +139,18 @@ export const HeroSection = memo(() => {
           },
           "-=0.4"
         )
-        .to(items, { scale: 1, opacity: 1, duration: 0.6 })
-        .add(() => {
-          items.forEach((item, i) => {
-            const angle = (i / count) * Math.PI * 2;
-            gsap.to(item, {
-              x: Math.cos(angle) * radius,
-              y: Math.sin(angle) * radius,
-              duration: 1.2,
-              ease: "power3.out",
-            });
-          });
-        })
+        // .to(items, { scale: 1, opacity: 1, duration: 0.6 })
+        // .add(() => {
+        //   items.forEach((item, i) => {
+        //     const angle = (i / count) * Math.PI * 2;
+        //     gsap.to(item, {
+        //       x: Math.cos(angle) * radius,
+        //       y: Math.sin(angle) * radius,
+        //       duration: 0.5,
+        //       ease: "power3.out",
+        //     });
+        //   });
+        // })
         .add(() => {
           unlockScroll(); // 🔓 افتح السكرول
           ScrollTrigger.refresh();
